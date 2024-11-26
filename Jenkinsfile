@@ -30,6 +30,11 @@ pipeline {
                 '''
             }
         }
+	stage('Run Tests') {
+            steps {
+                sh '.venv/bin/python -m unittest discover -s . -p "test_*.py"'
+            }
+        }
     }
     
     post {
@@ -43,4 +48,5 @@ pipeline {
             echo "Le pipeline a échoué. Vérifiez les logs."
         }
     }
+
 }
