@@ -10,7 +10,8 @@ pipeline {
         stage('Cloner le dépôt') {
             steps {
                 // Cloner le dépôt via SSH
-                git credentialsId: 'git-credentials-id', url: 'git@github.com:momodiawara/API_Flask.git'
+                git credentialsId: 'e17e6d7b-7c5f-457f-b0a0-ce096deb7983', url: 'git@github.com:momodiawara/API_Flask.git', branch: 'main'
+
 
             }
         }
