@@ -4,6 +4,7 @@ simple docker example
 Description
 
 Cette application est une petite démonstration d'un site web Flask avec des fonctionnalités de connexion, d'inscription, et une page d'accueil. Elle est automatisée avec Jenkins pour l'installation, l'exécution et le déploiement.
+
 Installation
 1. Clonez le projet
 
@@ -46,13 +47,13 @@ Jenkins Pipeline
     Commandes utilisées dans Jenkins :
         Activation de l'environnement virtuel :
 
-source venv/bin/activate
+    source venv/bin/activate
 
-Installation des dépendances :
+    Installation des dépendances :
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
-Exécution de Flask :
+    Exécution de Flask :
 
         FLASK_APP=app.py FLASK_ENV=production flask run --host=0.0.0.0 --port=5000
 

@@ -4,16 +4,25 @@ import sqlite3
 app = Flask(__name__)
 
 # Connexion à la base de données
-def get_db_connection():
-    conn = sqlite3.connect('users.db')
+def get_db_connection(testing=False):
+    if testing:
+        # Utiliser une base en mémoire pour les tests
+        conn = sqlite3.connect(':memory:')
+    else:
+        conn = sqlite3.connect('users.db')
     conn.row_factory = sqlite3.Row
     return conn
 
+
 # Fonction pour créer la base de données et la table des utilisateurs
-def create_db():
-    conn = sqlite3.connect('users.db')
+def create_db(testing=False):
+    if testing:
+        # Utiliser une base en mémoire pour les tests
+        conn = sqlite3.connect(':memory:')
+    else:
+        conn = sqlite3.connect('users.db')
+
     c = conn.cursor()
-    # Création de la table users si elle n'existe pas déjà
     c.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY,
@@ -23,6 +32,7 @@ def create_db():
     ''')
     conn.commit()
     conn.close()
+
 
 # Appeler la fonction create_db pour créer la base de données au démarrage de l'application
 create_db()

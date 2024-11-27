@@ -1,52 +1,58 @@
 pipeline {
     agent any
-    
-    stages {
-        stage('Setup') {
-            steps {
-                // Vérifier les versions de Python et pip
-                sh '''
-                python3 --version
-                pip --version
-                '''
-            }
-        }
-        stage('Install Dependencies') {
-            steps {
-                // Créer un environnement virtuel et installer les dépendances
-                sh '''
-                python3 -m venv venv
-                source venv/bin/activate
-                pip install -r requirements.txt
-                '''
-            }
-        }
-        stage('Run Application') {
-            steps {
-                // Lancer l'application Flask
-                sh '''
-                source venv/bin/activate
-                FLASK_APP=app.py FLASK_ENV=production flask run --host=0.0.0.0 --port=5000 &
-                '''
-            }
-        }
-	stage('Run Tests') {
-            steps {
-                sh '.venv/bin/python -m unittest discover -s . -p "test_*.py"'
-            }
-        }
+
+    environment {
+        // Définir l'environnement virtuel
+        VENV_DIR = '.venv'
     }
-    
-    post {
-        always {
-            echo "Pipeline terminé."
+
+    stages {
+        stage('Cloner le dépôt') {
+            steps {
+                // Cloner le code depuis le dépôt Git
+                git 'https://github.com/momodiawara/API_Flask.git'
+
+            }
         }
-        success {
-            echo "Application Flask déployée avec succès."
+
+        stage('Configurer l\'environnement virtuel') {
+            steps {
+                // Créer un environnement virtuel Python
+                sh 'python3 -m venv .venv'
+
+                // Activer l'environnement virtuel et installer les dépendances
+                sh '''
+                    .venv/bin/pip install --upgrade pip
+                    .venv/bin/pip install -r requirements.txt
+                '''
+            }
         }
-        failure {
-            echo "Le pipeline a échoué. Vérifiez les logs."
+
+        stage('Exécuter les tests') {
+            steps {
+                // Exécuter les tests unitaires avec pytest (ou unittest si tu préfères)
+                sh '.venv/bin/python3 -m unittest test_app.py'  // Utiliser pytest si tu préfères pytest
+            }
+        }
+
+        stage('Nettoyage') {
+            steps {
+                // Supprimer l'environnement virtuel après les tests
+                sh 'rm -rf .venv'
+            }
         }
     }
 
+    post {
+        always {
+            // Cette section est toujours exécutée après la fin du pipeline
+            echo 'Pipeline terminé.'
+        }
+        success {
+            echo 'Les tests ont réussi !'
+        }
+        failure {
+            echo 'Les tests ont échoué. Vérifie les logs ci-dessus.'
+        }
+    }
 }
