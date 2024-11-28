@@ -42,6 +42,7 @@ create_db()
 def home():
     return render_template('home.html')
 
+
 # Page d'inscription (register)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -82,6 +83,7 @@ def index():
             return "Invalid credentials! Please try again."
 
     return render_template('login.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

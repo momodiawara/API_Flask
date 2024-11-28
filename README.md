@@ -1,5 +1,5 @@
 # Flask Application with Jenkins Pipeline
-simple docker example
+example of simple API deployed on jenkins
 
 Description
 
