@@ -57,6 +57,7 @@ class FlaskTestCase(unittest.TestCase):
         response = self.app.get('/home')
         self.assertEqual(response.status_code, 200)  # Vérifier que la page d'accueil se charge correctement
 
-        
+
+    
 if __name__ == '__main__':
     unittest.main()
